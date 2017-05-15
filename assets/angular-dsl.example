@@ -1,0 +1,23 @@
+<ul class="session-container-list">
+  <li class="session-container"
+    *ngFor="let container of containers"
+    [class.empty-container]="container.sessions.length === 0" (click)="container.sessions.length === 0&&!isPublic&&!isAnalytics&&addNewSession(container)" [style.cursor]="(!isPublic&&!isAnalytics)?'pointer':'auto'">
+    <ul *ngIf="!isPublic" class="session-list"
+        [dragula]='"column"' [dragulaModel]='container.sessions'
+        data-column-type="absolute"
+        [attr.data-container]="getContainerData(container) | json">
+      <li class="session-wrapper"
+        *ngFor="let session of container.sessions"
+        [attr.data-session-id]="session.id"
+        [attr.data-session-placeholder]="session.placeholder"
+        [attr.data-session-start]="session.start?session.start.toISOString():''"
+        [attr.data-session-duration]="session.duration"
+        [class.placeholder]="session.placeholder">
+        <my-session [session]="session" [offsetDate]="offsetDate" [agenda]="agenda" [isPublic]="isPublic" [isAnalytics]="isAnalytics"
+          (onSessionEdited)="onSessionEdited($event)"
+          (onSpeakerEdited)="onSpeakerEdited($event)"
+          (onSpeakerAdded2)="onSpeakerAdded($event)"
+          (onVenueEdited)="onVenueEdited($event)"
+          (onVenueAdded2)="onVenueAdded($event)"
+          (onSessionDeleted)="onSessionDeleted($event)"
+          ></my-session>
